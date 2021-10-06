@@ -3,8 +3,8 @@
     <h1>{{ restaurantName }}</h1>
     <p class="description">
       Bienvenue dans notre café {{ restaurantName }}! Nous sommes réputés pour
-      notre pain et nos merveilleuses pâtisseries. Faites vous plaisir dès le
-      matin ou avec un goûter réconfortant. Mais attention, vous verrez qu'il
+      notre pain et nos merveilleuses pâtisseries. <br />Faites vous plaisir dès
+      le matin ou avec un goûter réconfortant. Mais attention, vous verrez qu'il
       est difficile de s'arrêter.
     </p>
 
@@ -15,6 +15,7 @@
         :addToShoppingCart="addToShoppingCart"
         :name="item.name"
         :image="item.image"
+        :price="item.price"
         :quantity="item.quantity"
         :inStock="item.inStock"
         :key="item.name"
@@ -33,7 +34,6 @@
 
 <script>
 import MenuItem from "../components/MenuItem";
-
 export default {
   name: "Home",
   components: {
@@ -52,6 +52,7 @@ export default {
           },
           inStock: true,
           quantity: 1,
+          price: 2.99,
         },
         {
           name: "Baguette de pain",
@@ -61,6 +62,7 @@ export default {
           },
           inStock: true,
           quantity: 1,
+          price: 3.99,
         },
         {
           name: "Éclair",
@@ -70,6 +72,7 @@ export default {
           },
           inStock: false,
           quantity: 1,
+          price: 4.99,
         },
       ],
     };
