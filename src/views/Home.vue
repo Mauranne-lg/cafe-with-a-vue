@@ -1,18 +1,18 @@
 <template>
-  <div id="app" class="app">
+  <div>
     <h1>{{ restaurantName }}</h1>
     <p class="description">
       Bienvenue dans notre café {{ restaurantName }}! Nous sommes réputés pour
-      notre pain et nos merveilleuses pâtisseries. <br />Faites vous plaisir dès
-      le matin ou avec un goûter réconfortant. Mais attention, vous verrez qu'il
+      notre pain et nos merveilleuses pâtisseries. Faites vous plaisir dès le
+      matin ou avec un goûter réconfortant. Mais attention, vous verrez qu'il
       est difficile de s'arrêter.
     </p>
 
     <section class="menu">
       <h2>Menu</h2>
       <MenuItem
+        @add-items-to-cart="updateShoppingCart"
         v-for="item in simpleMenu"
-        :addToShoppingCart="addToShoppingCart"
         :name="item.name"
         :image="item.image"
         :price="item.price"
@@ -22,9 +22,9 @@
       />
     </section>
 
-    <aside class="shopping-cart">
+    <div class="shopping-cart">
       <h2>Panier : {{ shoppingCart }} articles</h2>
-    </aside>
+    </div>
 
     <footer class="footer">
       <p>{{ copyright }}</p>
@@ -51,7 +51,7 @@ export default {
             alt: "Un croissant",
           },
           inStock: true,
-          quantity: 1,
+          quantity: 0,
           price: 2.99,
         },
         {
@@ -61,7 +61,7 @@ export default {
             alt: "Quatre baguettes de pain",
           },
           inStock: true,
-          quantity: 1,
+          quantity: 0,
           price: 3.99,
         },
         {
@@ -71,7 +71,7 @@ export default {
             alt: "Éclair au chocolat",
           },
           inStock: false,
-          quantity: 1,
+          quantity: 0,
           price: 4.99,
         },
       ],
@@ -84,9 +84,32 @@ export default {
     },
   },
   methods: {
-    addToShoppingCart(amount) {
-      this.shoppingCart += amount;
+    updateShoppingCart(payload) {
+      this.shoppingCart += payload.quantity;
     },
   },
 };
 </script>
+
+<style lang="scss">
+.description {
+  max-width: 960px;
+  font-size: 1.2rem;
+  margin: 0 auto;
+}
+.footer {
+  font-style: italic;
+  text-align: center;
+}
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.shopping-cart {
+  position: absolute;
+  right: 30px;
+  top: 0;
+}
+</style>

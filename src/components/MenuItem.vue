@@ -1,7 +1,33 @@
 <script>
 export default {
   name: "MenuItem",
-  props: ["addToShoppingCart", "image", "inStock", "name", "price", "quantity"],
+  props: {
+    image: {
+      type: Object,
+      required: true,
+    },
+    inStock: {
+      type: Boolean,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      defaut: 1,
+    },
+  },
+  data() {
+    return {
+      onSale: false,
+    };
+  },
   computed: {
     generatedPrice() {
       if (this.onSale) {
@@ -12,8 +38,15 @@ export default {
     },
   },
   beforeMount() {
-    const todayDay = new Date().toJSON().slice(8, 10);
-    if (todayDay % 2 === 0) this.onSale = true;
+    const today = new Date().getDate();
+    if (today % 2 === 0) {
+      this.onSale = true;
+    }
+  },
+  methods: {
+    updateShoppingCart(quantity) {
+      this.$emit("add-items-to-cart", { quantity });
+    },
   },
 };
 </script>
@@ -23,37 +56,34 @@ export default {
     <img class="menu-item__image" :src="image.source" :alt="image.alt" />
     <div>
       <h3>{{ name }}</h3>
-      <p>Prix : {{ generatedPrice }}</p>
+      <p>
+        Prix: {{ generatedPrice }}
+        <span v-if="onSale">(10% de réduction !)</span>
+      </p>
       <p v-if="inStock">En stock</p>
       <p v-else>En rupture de stock</p>
-      <div class="adding-menu">
-        <label for="add-item-quantity">Quantité : {{ quantity }}</label>
-        <input v-model.number="quantity" id="add-item-quantity" type="number" />
-        <button @click="addToShoppingCart(quantity)">Ajouter au panier</button>
+      <div>
+        <label for="add-item-quantity">Quantité :</label>
+        <input
+          v-model.number="quantity"
+          id="add-item-quantity"
+          type="number"
+          min="0"
+        />
+        <button @click="updateShoppingCart(quantity)">Ajouter au panier</button>
       </div>
     </div>
   </div>
 </template>
 
-<style>
-img {
-  width: 300px;
-  margin: 20px;
-}
-
+<style lang="scss">
 .menu-item {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.adding-menu {
-  display: flex;
-  flex-direction: column;
-  width: 100px;
-}
-.adding-menu > * {
-  margin: 5px;
+  width: 500px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  &__image {
+    max-width: 300px;
+  }
 }
 </style>
