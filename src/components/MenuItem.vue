@@ -1,5 +1,6 @@
 <script>
 import BaseButton from "./BaseButton.vue";
+import { mapActions } from "vuex";
 export default {
   name: "MenuItem",
   components: {
@@ -24,7 +25,7 @@ export default {
     },
     quantity: {
       type: Number,
-      defaut: 1,
+      defaut: 0,
     },
   },
   data() {
@@ -42,9 +43,7 @@ export default {
     },
   },
   methods: {
-    updateShoppingCart(quantity) {
-      this.$emit("add-items-to-cart", quantity);
-    },
+    ...mapActions(["updateCart"]),
   },
   beforeMount() {
     const today = new Date().getDate();
@@ -67,9 +66,9 @@ export default {
       <p v-if="inStock">En stock</p>
       <p v-else>En rupture de stock</p>
       <div>
-        <label for="add-item-quantity">Quantité : {{ quantity }}</label>
+        <label for="add-item-quantity">Quantité :</label>
         <input v-model.number="quantity" id="add-item-quantity" type="number" />
-        <BaseButton @click="updateShoppingCart(quantity)">
+        <BaseButton @click="updateCart(quantity)">
           <template v-slot:text> Ajouter au panier </template>
         </BaseButton>
       </div>
