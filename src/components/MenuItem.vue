@@ -1,6 +1,10 @@
 <script>
+import BaseButton from "./BaseButton.vue";
 export default {
   name: "MenuItem",
+  components: {
+    BaseButton,
+  },
   props: {
     image: {
       type: Object,
@@ -37,16 +41,16 @@ export default {
       }
     },
   },
+  methods: {
+    updateShoppingCart(quantity) {
+      this.$emit("add-items-to-cart", quantity);
+    },
+  },
   beforeMount() {
     const today = new Date().getDate();
     if (today % 2 === 0) {
       this.onSale = true;
     }
-  },
-  methods: {
-    updateShoppingCart(quantity) {
-      this.$emit("add-items-to-cart", { quantity });
-    },
   },
 };
 </script>
@@ -57,20 +61,17 @@ export default {
     <div>
       <h3>{{ name }}</h3>
       <p>
-        Prix: {{ generatedPrice }}
+        Prix : {{ generatedPrice }}
         <span v-if="onSale">(10% de réduction !)</span>
       </p>
       <p v-if="inStock">En stock</p>
       <p v-else>En rupture de stock</p>
       <div>
-        <label for="add-item-quantity">Quantité :</label>
-        <input
-          v-model.number="quantity"
-          id="add-item-quantity"
-          type="number"
-          min="0"
-        />
-        <button @click="updateShoppingCart(quantity)">Ajouter au panier</button>
+        <label for="add-item-quantity">Quantité : {{ quantity }}</label>
+        <input v-model.number="quantity" id="add-item-quantity" type="number" />
+        <BaseButton @click="updateShoppingCart(quantity)">
+          <template v-slot:text> Ajouter au panier </template>
+        </BaseButton>
       </div>
     </div>
   </div>
